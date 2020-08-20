@@ -1,6 +1,5 @@
 pipeline {
     agent any 
-    tools {nodejs "node"}
     stages {
         stage('Git') { 
             steps {
@@ -10,7 +9,7 @@ pipeline {
         }
         stage('Build') { 
             steps {
-                echo 'Building...'
+                echo 'Building1...'
                 sh 'ls -l | grep -i docker' 
             }
         }
