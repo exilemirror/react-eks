@@ -1,4 +1,5 @@
 pipeline {
+
     agent any 
     stages {
         stage('Git') { 
@@ -9,18 +10,20 @@ pipeline {
         }
         stage('Build') { 
             steps {
-                echo 'Building1...'
-                sh 'ls -l | grep -i docker' 
+                echo 'Building React App'
+                sh 'docker build -t exilemirror/app-prod -f Dockerfile .' 
             }
         }
         stage('Test') { 
             steps {
-                echo 'Testing...'
+                echo 'Testing React App'
+                sh 'docker-compose up --build'
             }
         }
-        stage('Deploy') { 
+        stage('Deploy image to Docker Hub') { 
             steps {
-                echo 'Deploying...' 
+                echo '"$dockerPwd" | docker login -u "dockerId" --password-stdin'
+                sh 'docker push exilemirror/app-prod'              
             }
         }
     }
