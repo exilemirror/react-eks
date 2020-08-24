@@ -1,5 +1,9 @@
 pipeline {
-
+    environment { 
+        registry = "exilemirror/react-eks" 
+        registryCredential = 'dockerhub' 
+        dockerImage = '' 
+    }
     agent any 
     stages {
         stage('Git') { 
@@ -8,23 +12,28 @@ pipeline {
                 git 'https://github.com/exilemirror/react-eks.git'
             }
         }
-        stage('Build') { 
-            steps {
-                echo 'Build React App'
-                sh 'docker build -t exilemirror/app-prod -f Dockerfile .' 
-            }
+        stage('Building') { 
+            steps { 
+                echo 'Building React App...'
+                script { 
+                    dockerImage = docker.build registry + ":$BUILD_NUMBER" 
+                }
+            } 
         }
         stage('Test') { 
             steps {
                 echo 'Test React App'
-                sh 'docker-compose up --build'
+                //sh 'docker-compose up --build'
             }
         }
-        stage('Push to DockerHub') { 
-            steps {
-                echo '"$dockerPwd" | docker login -u "$dockerId" --password-stdin'
-                sh 'docker push exilemirror/app-prod'              
+        stage('Push to Docker Hub') { 
+            steps { 
+                script { 
+                    docker.withRegistry( '', registryCredential ) { 
+                        dockerImage.push() 
+                    }
+                } 
             }
-        }
+        } 
     }
 }
