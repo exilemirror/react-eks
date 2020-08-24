@@ -20,7 +20,7 @@ pipeline {
                 sh 'docker-compose up --build'
             }
         }
-        stage('Deploy') { 
+        stage('Push to dockerhub') { 
             steps {
                 echo '"$dockerPwd" | docker login -u "dockerId" --password-stdin'
                 sh 'docker push exilemirror/app-prod'              
