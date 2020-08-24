@@ -10,13 +10,13 @@ pipeline {
         }
         stage('Build') { 
             steps {
-                echo 'Building React App'
+                echo 'Build React App'
                 sh 'docker build -t exilemirror/app-prod -f Dockerfile .' 
             }
         }
         stage('Test') { 
             steps {
-                echo 'Testing React App'
+                echo 'Test React App'
                 sh 'docker-compose up --build'
             }
         }
