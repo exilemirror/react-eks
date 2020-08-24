@@ -22,7 +22,7 @@ pipeline {
         }
         stage('Push to Docker Hub') { 
             steps {
-                echo '"$dockerPwd" | docker login -u "dockerId" --password-stdin'
+                echo '"$dockerPwd" | docker login -u "$dockerId" --password-stdin'
                 sh 'docker push exilemirror/app-prod'              
             }
         }
